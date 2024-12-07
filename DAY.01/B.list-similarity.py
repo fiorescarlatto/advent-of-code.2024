@@ -47,35 +47,36 @@ Once again consider your left and right lists. What is their similarity
 score?
 '''
 
+# READS THE INPUT LINE BY LINE
+file = open('input.txt', 'r', encoding='utf-8')
+lines = file.readlines()
+file.close()
+assert len(lines) == 1000
+
+# NORMALIZES THE INPUT
 list_A = []
 list_B = []
 
-file = open('input.txt', 'r', encoding='utf-8')
-
-while True:
-    line = file.readline()
-    if line == '':
-        break
-
-    a = int(line[:5])
-    b = int(line[8:])
-    list_A.append(a)
-    list_B.append(b)
-
-file.close()
-
+for l in lines:
+    a,b = l.split('   ')
+    list_A.append( int(a) )
+    list_B.append( int(b) )
 assert len(list_A) == len(list_B)
 
-db = {}
-for e in list_B:
-    if e not in db.keys():
-        db[e] = 1
+# CREATE OCCURENCES TABLE
+occurrence = {}
+for b in list_B:
+    if b in occurrence.keys():
+        occurrence[b] += 1
     else:
-        db[e] += 1
+        occurrence[b] = 1
 
+
+# SOLUTION
 similarity = 0
-for e in list_A:
-    if e in db.keys():
-        similarity += e*db[e]
 
-print(similarity)
+for a in list_A:
+    if a in occurrence.keys():
+        similarity += a*occurrence[a]
+
+print(similarity) # 22565391
