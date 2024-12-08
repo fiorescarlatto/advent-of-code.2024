@@ -113,16 +113,16 @@ assert len(lines) == 50
 input = [list(l.strip()) for l in lines]
 assert len(input) == 50
 
-# MAKE A MAP OF ALL ANTENNAS AND POSITIONS
+# MAKE A MAP OF ANTENNAS TO EXISTING POSITIONS
 map = {}
 for row in range(len(input)):
     for col in range(len( input[row] )):
         if input[row][col] != '.':
-            a = input[row][col]
-            if a in map.keys():
-                map[a] += [(row,col)]
+            antenna = input[row][col]
+            if antenna in map.keys():
+                map[antenna] += [(row,col)]
             else:
-                map[a]  = [(row,col)]
+                map[antenna]  = [(row,col)]
 
 
 def all_pairs(collection):
