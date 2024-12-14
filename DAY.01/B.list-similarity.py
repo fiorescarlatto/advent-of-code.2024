@@ -48,10 +48,8 @@ score?
 '''
 
 # READS THE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-lines = file.readlines()
-file.close()
-assert len(lines) == 1000
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
 
 # NORMALIZES THE INPUT
 list_A = []
@@ -61,7 +59,6 @@ for l in lines:
     a,b = l.split('   ')
     list_A.append( int(a) )
     list_B.append( int(b) )
-assert len(list_A) == len(list_B)
 
 # CREATE OCCURENCES TABLE
 occurrence = {}
@@ -70,7 +67,6 @@ for b in list_B:
         occurrence[b] += 1
     else:
         occurrence[b] = 1
-
 
 # SOLUTION
 similarity = 0
