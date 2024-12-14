@@ -77,10 +77,8 @@ total distance between your lists?
 '''
 
 # READS THE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-lines = file.readlines()
-file.close()
-assert len(lines) == 1000
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
 
 # NORMALIZES THE INPUT
 list_A = []
@@ -90,14 +88,12 @@ for l in lines:
     a,b = l.split('   ')
     list_A.append( int(a) )
     list_B.append( int(b) )
-assert len(list_A) == len(list_B)
-
 
 # SOLUTION
-distance = 0
-
 list_A.sort()
 list_B.sort()
+distance = 0
+
 for i in range(len(list_A)):
     distance += abs(list_A[i] - list_B[i])
 
