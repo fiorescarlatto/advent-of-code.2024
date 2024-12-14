@@ -23,11 +23,9 @@ for l in lines:
     l = l.strip().split(' ')
     start = l[0][2:].split(',')
     speed = l[1][2:].split(',')
-
     start = [int(s) for s in start]
     speed = [int(s) for s in speed]
     pos   = [0, 0]
-
     robots.append( [start,speed,pos] )
 
 
