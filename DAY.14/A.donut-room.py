@@ -149,43 +149,40 @@ tiles wide and 103 tiles tall. What will the safety factor be after exactly
 '''
 
 # READ FILE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-lines = file.readlines()
-file.close()
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+
+# OTHER INFORMATION
+size = [101, 103]
+seconds = 100
 
 # NORMALIZE THE INPUT
 robots = []
 
 for l in lines:
     l = l.strip().split(' ')
-    position = l[0][2:].split(',')
-    velocity = l[1][2:].split(',')
-    position = [int(p) for p in position]
-    velocity = [int(v) for v in velocity]
-    robots.append([position,velocity])
-
-# OTHER INFORMATION
-size = [101, 103]
-seconds = 100
+    start = l[0][2:].split(',')
+    speed = l[1][2:].split(',')
+    start = [int(s) for s in start]
+    speed = [int(s) for s in speed]
+    robots.append( [start,speed] )
 
 
 # SOLUTION
 quadrant = [0, 0, 0, 0]
 
 for r in robots:
-    position, velocity = r
-    goal = [
-        (position[0] + seconds * velocity[0]) % size[0], 
-        (position[1] + seconds * velocity[1]) % size[1]
-    ]
+    start,speed = r
+    pos = [ (start[0] + seconds * speed[0]) % size[0], 
+            (start[1] + seconds * speed[1]) % size[1] ]
     
-    if goal[0] < size[0] // 2 and goal[1] < size[1] // 2:
+    if pos[0] < size[0] // 2 and pos[1] < size[1] // 2:
         quadrant[0] += 1
-    if goal[0] > size[0] // 2 and goal[1] < size[1] // 2:
+    if pos[0] > size[0] // 2 and pos[1] < size[1] // 2:
         quadrant[1] += 1
-    if goal[0] > size[0] // 2 and goal[1] > size[1] // 2:
+    if pos[0] > size[0] // 2 and pos[1] > size[1] // 2:
         quadrant[2] += 1
-    if goal[0] < size[0] // 2 and goal[1] > size[1] // 2:
+    if pos[0] < size[0] // 2 and pos[1] > size[1] // 2:
         quadrant[3] += 1
 
 # TOTAL
