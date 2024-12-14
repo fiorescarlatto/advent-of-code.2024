@@ -39,7 +39,7 @@ file.close()
 
 import re
 # USING REGULAR EXPRESSIONS TO FIND mul(n,n)
-regexp = 'mul\\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\\)'
+regexp = r'mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)'
 instructions = re.findall(regexp, memory)
 
 # CALCULATES EACH MULT
