@@ -36,7 +36,7 @@ file.close()
 
 import re
 # USING REGULAR EXPRESSIONS TO FIND mul(n,n)|do()|don't()
-regexp = "mul\\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\\)|do\\(\\)|don't\\(\\)"
+regexp = "mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)|do\(\)|don't\(\)"
 instructions = re.findall(regexp, memory)
 
 # KEEP TRACK OF THE DO() STATE
