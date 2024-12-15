@@ -59,6 +59,9 @@ with open('input.txt', 'r', encoding='utf-8') as file:
 # NORMALIZE THE INPUT
 words = [list(x.strip()) for x in lines]
 
+# SEARCH STRING
+search = 'XMAS'
+
 
 def find(string:str, direction:tuple[int], start:tuple[int], grid:list[list]) -> bool:
     for i in range(len(string)):
@@ -90,6 +93,6 @@ pad(words, '')
 # LOOK FOR MATCHES AT EACH POSITION
 for row in range(1, len(words) - 1):
     for col in range(1, len( words[row] ) - 1):
-        total += find_all('XMAS', (row,col), words)
+        total += find_all(search, (row,col), words)
 
 print(total) # 2543
