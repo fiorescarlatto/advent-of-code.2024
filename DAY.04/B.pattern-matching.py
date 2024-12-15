@@ -35,40 +35,11 @@ side and try again. How many times does an X-MAS appear?
 '''
 
 # READ THE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-lines = file.readlines()
-file.close()
-assert len(lines) == 140
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
 
-# NORMALIZE THE INPUT TO A LIST OF LISTS OF STRINGS
-lines = [list(x.strip()) for x in lines]
-assert len(lines) == 140
-assert len(lines[0]) == 140
-
-
-def window_at(pos:tuple[int], size:tuple[int], matrix:list[list]):
-    window = []
-    for row in range(size[0]):
-        r = []
-        for col in range(size[1]):
-            r.append(matrix[ pos[0]+row ][ pos[1]+col ])
-        window.append(r)
-    return window
-
-def sliding_window(size:tuple[int], matrix:list[list]):
-    sw = []
-    for row in range(len(matrix) - (size[0]-1)):
-        for col in range(len(matrix[row]) - (size[1]-1)):
-            sw.append(window_at((row, col), size, matrix))
-    return sw
-
-def pattern_match(pattern:list[list], matrix:list[list]):
-    for row in range(len(pattern)):
-        for col in range(len(pattern[row])):
-            if pattern[row][col] != '' and pattern[row][col] != matrix[row][col]:
-                return False
-    return True
-
+# NORMALIZE THE INPUT
+words = [list(x.strip()) for x in lines]
 
 # DEFINE MY SEARCH PATTERNS
 patterns = [
@@ -90,11 +61,31 @@ patterns = [
     ]   
 ]
 
+
+def window(grid:list[list], pos:tuple[int], size:tuple[int]) -> list[list]:
+    window = []
+    for row in range( size[0] ):
+        window.append( grid[ pos[0]+row ][ pos[1] : pos[1]+size[1] ] )
+    return window
+
+def sliding_windows(grid:list[list], size:tuple[int]):
+    for row in range( len(grid) - ( size[0]-1 ) ):
+        for col in range( len( grid[row] ) - ( size[1]-1 ) ):
+            yield window(grid, (row,col), size)
+
+def pattern_match(pattern:list[list], grid:list[list]) -> bool:
+    for row in range( len(pattern) ):
+        for col in range( len( pattern[row] ) ):
+            if pattern[row][col] != '' and pattern[row][col] != grid[row][col]:
+                return False
+    return True
+
+
 # SOLUTION
 count = 0
 
-# FOR EACH 3x3 WINDOW COUNTS THE MATCHIN PATTERNS
-for w in sliding_window((3,3), lines):
+# FOR EACH 3x3 WINDOW COUNTS THE MATCHING PATTERNS
+for w in sliding_windows(words, (3,3)):
     for p in patterns:
         if pattern_match(p, w):
             count += 1
