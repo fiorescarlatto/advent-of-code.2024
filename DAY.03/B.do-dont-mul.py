@@ -30,18 +30,17 @@ results of just the enabled multiplications?
 '''
 
 # READS THE WHOLE FILE INTO A SINGLE STRING
-file = open('input.txt', 'r', encoding='utf-8')
-memory = file.read()
-file.close()
+with open('input.txt', 'r', encoding='utf-8') as file:
+    memory = file.read()
 
 import re
 # USING REGULAR EXPRESSIONS TO FIND mul(n,n)|do()|don't()
-regexp = "mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)|do\(\)|don't\(\)"
-instructions = re.findall(regexp, memory)
+regexp = r"mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)|do\(\)|don't\(\)"
+instructions:list[str] = re.findall(regexp, memory)
 
-# KEEP TRACK OF THE DO() STATE
+# SOLUTION
+total = 0
 execute = True
-result = 0
 
 # CALCULATES EACH MULT
 for i in instructions:
@@ -49,14 +48,12 @@ for i in instructions:
         execute = True
     elif i == "don't()":
         execute = False
-
     elif execute:
         # NORMALIZES THE mul(n,n) INSTRUCTION TO A [list] OF [int]
         i = i.replace('mul(', '')
         i = i.replace(')', '')
         i = [int(x) for x in i.split(',')]
-
         # CALCULATES THE mul INSTRUCTION
-        result += i[0] * i[1]
+        total += i[0] * i[1]
 
-print(result) # 98729041
+print(total) # 98729041
