@@ -51,25 +51,21 @@ Analyze the unusual data from the engineers. How many reports are safe?
 '''
 
 # READS THE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-input = file.readlines()
-file.close()
-assert len(input) == 1000
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
 
-# NORMALIZES THE INPUT TO A list[list[int]]
-input = [[int(y) for y in x.split(' ')] for x in input]
-assert len(input) == 1000
+# NORMALIZES THE INPUT
+reports = []
+
+for report in lines:
+    reports.append( [int(level) for level in report.split(' ')] )
 
 
-def report_is_safe(report:list[int]):
+def is_safe(report: list[int]) -> bool:
     if len(report) <= 1:
         return True
-    if len(report) == 2:
-        return (report[0] != report[1])
-    
     # CALCULATES ASCENDING/DESCENDING FACTOR
     factor = -1 if report[0] < report[1] else 1
-
     # FOR EACH LEVEL AFTER THE FIRST
     for i in range(1, len(report)):
         # CALCULATES THE CHANGE AND CHECKS IF VALID
@@ -79,12 +75,12 @@ def report_is_safe(report:list[int]):
     return True
 
 
-#SOLUTION
-safe_reports = 0
+# SOLUTION
+total = 0
 
 # FOR EACH REPORT CHECK IF IT'S SAFE
-for report in input:
-    if report_is_safe(report):
-        safe_reports += 1
+for report in reports:
+    if is_safe(report):
+        total += 1
 
-print(safe_reports) # 572
+print(total) # 572
