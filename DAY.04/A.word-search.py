@@ -53,55 +53,43 @@ appear?
 '''
 
 # READ THE INPUT LINE BY LINE
-file = open('input.txt', 'r', encoding='utf-8')
-lines = file.readlines()
-file.close()
-assert len(lines) == 140
+with open('input.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
 
-# NORMALIZE THE INPUT TO A list[list[str]]
-lines = [list(x.strip()) for x in lines]
-assert len(lines) == 140
-assert len(lines[0]) == 140
+# NORMALIZE THE INPUT
+words = [list(x.strip()) for x in lines]
 
 
-def find(search_str:str, direction:tuple[int], start:tuple[int], matrix:list[list]):
-    for i in range(len(search_str)):
+def find(string:str, direction:tuple[int], start:tuple[int], grid:list[list]) -> bool:
+    for i in range(len(string)):
         row = start[0] + i*direction[0]
         col = start[1] + i*direction[1]
-        if matrix[row][col] != search_str[i]:
-            return 0
-    return 1
+        if grid[row][col] != string[i]:
+            return False
+    return True
 
-def find_all_at(search_str:str, start:tuple[int], matrix:list[list]):
+def find_all(string:str, start:tuple[int], grid:list[list]) -> int:
+    d = [( 1, 0), (-1, 0), ( 0, 1), ( 0,-1), ( 1, 1), ( 1,-1), (-1, 1), (-1,-1)]
     count = 0
-    count += find(search_str, ( 1, 0), start, matrix)
-    count += find(search_str, (-1, 0), start, matrix)
-    count += find(search_str, ( 0, 1), start, matrix)
-    count += find(search_str, ( 0,-1), start, matrix)
-    count += find(search_str, ( 1, 1), start, matrix)
-    count += find(search_str, ( 1,-1), start, matrix)
-    count += find(search_str, (-1, 1), start, matrix)
-    count += find(search_str, (-1,-1), start, matrix)
+    for direction in d:
+        count += find(string, direction, start, grid)
     return count
 
-def padding(pad, amount:int, matrix:list[list]):
-    for _ in range(amount):
-        matrix.insert(0, [pad] * len(matrix[0]))
-        matrix.append(   [pad] * len(matrix[0]))
-    for i in range(len(matrix)):
-        matrix[i] = [pad]*amount + matrix[i] + [pad]*amount
+def pad(grid:list[list], filler = '.') -> None:
+    grid.append(   [filler] * len(grid[0]))
+    grid.insert(0, [filler] * len(grid[0]))
+    for i in range(len(grid)):
+        grid[i] = [filler] + grid[i] + [filler]
 
 
 # SOLUTION
-search = 'XMAS'
-count = 0
-
-# ADD PADDING AROUND TO ALLOW SEARCH OUT OF BOUNDS
-padding('', len(search), lines)
+total = 0
+# ADD PADDING AROUND TO AVOID SEARCHING OUT OF BOUNDS
+pad(words, '')
 
 # LOOK FOR MATCHES AT EACH POSITION
-for row in range(len(search), len(lines) - len(search)):
-    for col in range(len(search), len(lines[row]) - len(search)):
-        count += find_all_at(search, (row,col), lines)
+for row in range(1, len(words) - 1):
+    for col in range(1, len( words[row] ) - 1):
+        total += find_all('XMAS', (row,col), words)
 
-print(count) # 2543
+print(total) # 2543
