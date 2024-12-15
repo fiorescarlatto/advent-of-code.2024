@@ -33,24 +33,23 @@ if you add up all of the results of the multiplications?
 '''
 
 # READS THE WHOLE FILE INTO A SINGLE STRING
-file = open('input.txt', 'r', encoding='utf-8')
-memory = file.read()
-file.close()
+with open('input.txt', 'r', encoding='utf-8') as file:
+    memory = file.read()
 
 import re
 # USING REGULAR EXPRESSIONS TO FIND mul(n,n)
-regexp = r'mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)'
-instructions = re.findall(regexp, memory)
+regex = r'mul\([0-9][0-9]?[0-9]?,[0-9][0-9]?[0-9]?\)'
+instructions:list[str] = re.findall(regex, memory)
 
-# CALCULATES EACH MULT
-result = 0
+# SOLUTION
+total = 0
+
 for i in instructions:
     # NORMALIZES THE mul(n,n) INSTRUCTION TO A [list] OF [int]
     i = i.replace('mul(', '')
     i = i.replace(')', '')
     i = [int(x) for x in i.split(',')]
-    
     # CALCULATES THE mul INSTRUCTION
-    result += i[0] * i[1]
+    total += i[0] * i[1]
 
-print(result) # 181345830
+print(total) # 181345830
