@@ -60,19 +60,23 @@ for l in lines:
     list_A.append( int(a) )
     list_B.append( int(b) )
 
-# CREATE OCCURENCES TABLE
-occurrence = {}
-for b in list_B:
-    if b in occurrence.keys():
-        occurrence[b] += 1
-    else:
-        occurrence[b] = 1
+
+def counts(list:list) -> dict:
+    counts = {}
+    for element in list:
+        if element in counts.keys():
+            counts[element] += 1
+        else:
+            counts[element]  = 1
+    return counts
+
 
 # SOLUTION
+amounts = counts(list_B)
 similarity = 0
 
 for a in list_A:
-    if a in occurrence.keys():
-        similarity += a*occurrence[a]
+    if a in amounts.keys():
+        similarity += a * amounts[a]
 
 print(similarity) # 22565391
