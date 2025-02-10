@@ -47,36 +47,42 @@ Once again consider your left and right lists. What is their similarity
 score?
 '''
 
-# READS THE INPUT LINE BY LINE
+# :::::::::::::::::::::::::::::  INPUT  :::::::::::::::::::::::::::::: #
 with open('input.txt', 'r', encoding='utf-8') as file:
+    # READS THE INPUT FILE LINE BY LINE
     lines = file.readlines()
 
-# NORMALIZES THE INPUT
+# CREATES TWO LISTS TO HOLD THE NUMBERS
 list_A = []
 list_B = []
 
 for l in lines:
     a,b = l.split('   ')
+    # FILLS THE LISTS
     list_A.append( int(a) )
     list_B.append( int(b) )
 
-
+# ::::::::::::::::::::::::::::  SOLUTION  :::::::::::::::::::::::::::: #
 def counts(list:list) -> dict:
-    counts = {}
+    """
+    Count the occurrences of each distinct element in the list.
+    """
+    count = {}
     for element in list:
-        if element in counts.keys():
-            counts[element] += 1
+        if element in count.keys():
+            count[element] += 1
         else:
-            counts[element]  = 1
-    return counts
+            count[element]  = 1
+    return count
 
-
-# SOLUTION
-amounts = counts(list_B)
+# GETS THE COUNT OF EACH DISTINCT ELEMENT
+count = counts(list_B)
+# ACCUMULATOR FOR THE TOTAL SIMILARITY
 similarity = 0
 
 for a in list_A:
-    if a in amounts.keys():
-        similarity += a * amounts[a]
+    if a in count.keys():
+        # ADDS TO THE TOTAL
+        similarity += a * count[a]
 
 print(similarity) # 22565391

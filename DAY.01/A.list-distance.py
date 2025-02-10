@@ -76,25 +76,31 @@ Your actual left and right lists contain many location IDs. What is the
 total distance between your lists?
 '''
 
-# READS THE INPUT LINE BY LINE
+# :::::::::::::::::::::::::::::  INPUT  :::::::::::::::::::::::::::::: #
 with open('input.txt', 'r', encoding='utf-8') as file:
+    # READS THE INPUT FILE LINE BY LINE
     lines = file.readlines()
 
-# NORMALIZES THE INPUT
+# CREATES TWO LISTS TO HOLD THE NUMBERS
 list_A = []
 list_B = []
 
 for l in lines:
     a,b = l.split('   ')
+    # FILLS THE LISTS
     list_A.append( int(a) )
     list_B.append( int(b) )
 
-# SOLUTION
+# ::::::::::::::::::::::::::::  SOLUTION  :::::::::::::::::::::::::::: #
+# SORTS BOTH LISTS IN ASCENDING ORDER
 list_A.sort()
 list_B.sort()
+
+# ACCUMULATOR FOR THE TOTAL DISTANCE
 distance = 0
 
 for i in range(len(list_A)):
+    # ADDS TO THE TOTAL DISTANCE
     distance += abs(list_A[i] - list_B[i])
 
 print(distance) # 3574690

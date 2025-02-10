@@ -25,46 +25,51 @@ Update your analysis by handling situations where the Problem Dampener can
 remove a single level from unsafe reports. How many reports are now safe?
 '''
 
-# READS THE INPUT LINE BY LINE
+# :::::::::::::::::::::::::::::  INPUT  :::::::::::::::::::::::::::::: #
 with open('input.txt', 'r', encoding='utf-8') as file:
+    # READS THE FILE LINE BY LINE
     lines = file.readlines()
 
-# NORMALIZES THE INPUT
-reports:list[list] = []
+# CREATES A LIST OF REPORTS
+reports = []
 
 for report in lines:
-    reports.append( [int(level) for level in report.split(' ')] )
+    # CREATES A LIST OF LEVELS
+    levels = [int(x) for x in report.split(' ')]
+    # ADDS IT TO THE LIST OF REPORTS
+    reports.append( levels )
 
-
-def is_safe(report: list[int]) -> bool:
-    if len(report) <= 1:
-        return True
-    # CALCULATES ASCENDING/DESCENDING FACTOR
+# ::::::::::::::::::::::::::::  SOLUTION  :::::::::::::::::::::::::::: #
+def is_safe(report:list[int]) -> bool:
+    '''
+    Checks if a given report is safe.
+    '''
+    # CALCULATES ASCENDING OR DESCENDING FACTOR
     factor = -1 if report[0] < report[1] else 1
     # FOR EACH LEVEL AFTER THE FIRST
     for i in range(1, len(report)):
-        # CALCULATES THE CHANGE AND CHECKS IF VALID
+        # CALCULATES THE CHANGE
         change = (report[i-1] - report[i]) * factor
+        # CHECKS IF CHANGE IS BETWEEN TOLERANCE
         if change < 1 or change > 3:
             return False
     return True
 
+def within_tolerance(report:list[int]) -> bool:
+    '''
+    Checks if a given report has at most one error.
+    '''
+    for i in range(len(report)):
+        # CREATES A COPY OF THE ORIGINAL REPORT
+        cleaned = report.copy()
+        # REMOVES ONE (POSSIBLY) PROBLEMATIC LEVEL 
+        cleaned.pop(i)
+        # CHECK IF THE CLEANED REPORT IS SAFE
+        if is_safe(cleaned):
+            return True
+    return False
 
-# SOLUTION
-total = 0
-
-for report in reports:
-    if is_safe(report):
-        total += 1
-    else:
-        # TRY REMOVING ONE PROBLEM LEVEL
-        for i in range(len(report)):
-            # CREATE DAMPENED REPORT
-            dampened = report.copy()
-            dampened.pop(i)
-            # CHECK IF IT'S SAFE NOW
-            if is_safe(dampened):
-                total += 1
-                break
+# GETS THE NUMBER OF SAFE REPORTS 
+total = sum(map(within_tolerance, reports))
 
 print(total) # 612
